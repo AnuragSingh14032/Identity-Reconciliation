@@ -7,9 +7,17 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
-    "types": [],
+    //-------- "module": "nodenext",
+    //----------- "target": "esnext",
+    //----------- "types": [],
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    // ---------------- "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "types": ["node"],
+
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -17,8 +25,8 @@
 
     // Other Outputs
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    // "declaration": true,
+    // "declarationMap": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
@@ -34,11 +42,12 @@
 
     // Recommended Options
     "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
+    // "jsx": "react-jsx",
+    // "verbatimModuleSyntax": true,
+    // "isolatedModules": true,
+    // "noUncheckedSideEffectImports": true,
+    // "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  "include": ["src", "prisma.config.ts"]
 }
