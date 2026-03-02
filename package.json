@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,11 +21,11 @@
   },
   "homepage": "https://github.com/AnuragSingh14032/Identity-Reconciliation#readme",
   "dependencies": {
-    "@prisma/client": "^7.4.2",
+    "@prisma/client": "^5.22.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "prisma": "^7.4.2"
+    "prisma": "^5.22.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
