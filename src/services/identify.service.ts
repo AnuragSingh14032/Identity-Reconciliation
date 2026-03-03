@@ -21,9 +21,7 @@ export const identifyService = async (
   // 2️⃣ Fetch matching contacts
   // ---------------------------------
   let matchedContacts: Contact[] = await prisma.contact.findMany({
-    where: {
-      OR: orConditions,
-    },
+    where: { OR: orConditions },
   });
 
   // ---------------------------------
@@ -53,24 +51,21 @@ export const identifyService = async (
   // ---------------------------------
   // 4️⃣ STEP 7 — MERGE MULTIPLE PRIMARIES
   // ---------------------------------
-
   const primaryContacts = matchedContacts.filter(
     (contact) => contact.linkPrecedence === "primary"
   );
 
   if (primaryContacts.length > 1) {
-    // Sort by createdAt (oldest first)
     primaryContacts.sort(
       (a, b) =>
         new Date(a.createdAt).getTime() -
         new Date(b.createdAt).getTime()
     );
 
-    const oldest = primaryContacts[0];
+    const oldest = primaryContacts[0]!; // ✅ FIXED (non-null assertion)
     const others = primaryContacts.slice(1);
 
     for (const contact of others) {
-      // Convert this primary → secondary
       await prisma.contact.update({
         where: { id: contact.id },
         data: {
@@ -79,7 +74,6 @@ export const identifyService = async (
         },
       });
 
-      // Update its secondaries to point to oldest
       await prisma.contact.updateMany({
         where: { linkedId: contact.id },
         data: { linkedId: oldest.id },
@@ -105,13 +99,14 @@ export const identifyService = async (
   // ---------------------------------
   // 6️⃣ Create Secondary If New Info
   // ---------------------------------
-
   const emailExists = email
     ? matchedContacts.some((contact) => contact.email === email)
     : true;
 
   const phoneExists = phoneNumber
-    ? matchedContacts.some((contact) => contact.phoneNumber === phoneNumber)
+    ? matchedContacts.some(
+        (contact) => contact.phoneNumber === phoneNumber
+      )
     : true;
 
   if (!emailExists || !phoneExists) {
